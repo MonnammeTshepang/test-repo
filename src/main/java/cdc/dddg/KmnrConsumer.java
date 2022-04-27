@@ -10,12 +10,5 @@ import javax.enterprise.context.ApplicationScoped;
 import java.util.*;
 
 @ApplicationScoped public class KmnrConsumer {
-    final KmnrRepository repository;
 
-    public KmnrConsumer(KmnrRepository repository) {
-        this.repository = repository;
-    }
-    @Incoming("kmnr") public void cosume(GenericRecord record) {
-        repository.save(map(record));
-    }
 }
