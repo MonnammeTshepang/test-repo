@@ -1,20 +1,33 @@
 package cdc.dddg;
 
+import com.amazonaws.services.lambda.runtime.Context;
+import com.amazonaws.services.lambda.runtime.LambdaLogger;
+import com.amazonaws.services.lambda.runtime.RequestHandler;
 import org.apache.kafka.clients.consumer.ConsumerRecord;
 import org.eclipse.microprofile.reactive.messaging.Incoming;
 
 import java.time.*;
 import javax.enterprise.context.ApplicationScoped;
+import javax.inject.Named;
 import javax.ws.rs.GET;
 import javax.ws.rs.Path;
 
 @ApplicationScoped
+@Named("app")
 @Path("/streaming-data")
-public class KmnrConsumer {
+public class KmnrConsumer implements RequestHandler<Object, String> {
     String message;
     long kafkaUnix;
     Instant kafkaUTC;
     Instant lastRecordUTC;
+
+    @Override
+    public String handleRequest(Object event, Context context) {
+        LambdaLogger logger = context.getLogger();
+        String response = new String("SUCCESS");
+        logger.log("Remote App Lite online");
+        return response;
+    }
 
     /**
      * Constructor to initially produce message

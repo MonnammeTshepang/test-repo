@@ -1,4 +1,4 @@
-package org.acme;
+package cdc.dddg;
 
 import io.quarkus.test.junit.QuarkusIntegrationTest;
 
