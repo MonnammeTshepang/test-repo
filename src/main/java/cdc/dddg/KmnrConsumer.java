@@ -1,33 +1,22 @@
 package cdc.dddg;
 
-import com.amazonaws.services.lambda.runtime.Context;
-import com.amazonaws.services.lambda.runtime.LambdaLogger;
-import com.amazonaws.services.lambda.runtime.RequestHandler;
+import org.apache.avro.generic.GenericRecord;
 import org.apache.kafka.clients.consumer.ConsumerRecord;
 import org.eclipse.microprofile.reactive.messaging.Incoming;
 
-import java.time.*;
 import javax.enterprise.context.ApplicationScoped;
-import javax.inject.Named;
 import javax.ws.rs.GET;
 import javax.ws.rs.Path;
+import java.time.Duration;
+import java.time.Instant;
 
 @ApplicationScoped
-@Named("app")
 @Path("/streaming-data")
-public class KmnrConsumer implements RequestHandler<Object, String> {
+public class KmnrConsumer {
     String message;
     long kafkaUnix;
     Instant kafkaUTC;
     Instant lastRecordUTC;
-
-    @Override
-    public String handleRequest(Object event, Context context) {
-        LambdaLogger logger = context.getLogger();
-        String response = new String("SUCCESS");
-        logger.log("Remote App Lite online");
-        return response;
-    }
 
     /**
      * Constructor to initially produce message
@@ -39,10 +28,10 @@ public class KmnrConsumer implements RequestHandler<Object, String> {
     }
 
     @Incoming("kmnr")
-        public void consume(ConsumerRecord<String, String> record) {
+    public void consume(ConsumerRecord<String, GenericRecord> record) {
         String topic = record.topic();
         String key = record.key();
-        String value = record.value();
+        String value = (record.value().toString());
         this.kafkaUnix = record.timestamp();
 
         // Current UTC timestamp
@@ -65,8 +54,8 @@ public class KmnrConsumer implements RequestHandler<Object, String> {
     public String response() {
         System.out.println(
                 "Kafka Record Timestamps: \n"
-                + "Received: " + this.lastRecordUTC + "\n"
-                + "Metadata: " + this.kafkaUTC);
+                        + "Received: " + this.lastRecordUTC + "\n"
+                        + "Metadata: " + this.kafkaUTC);
 
         return this.message;
     }
