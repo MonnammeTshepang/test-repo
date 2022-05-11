@@ -41,22 +41,14 @@ public class KmnrConsumer {
         this.kafkaUTC = Instant.ofEpochMilli(this.kafkaUnix);
 
         // Latency calculation
-        Duration latency = Duration.between(this.lastRecordUTC, this.kafkaUTC);
-        System.out.println(latency.toMillis());
+        Duration latency = Duration.between(this.kafkaUTC, this.lastRecordUTC);
         this.message = record.toString();
 
-        System.out.println("timestamp: " + this.kafkaUTC + ", topic: " + topic + ", value: " + value);
+        System.out.println("timestamp: " + this.kafkaUTC + "; topic: " + topic + "; latency: " + latency.toMillis() + " value: " + value);
     }
 
-    // Get mit parameter nach dem gesucht werden kann z.b. ID
-    // Timestamp gesucht
     @GET
     public String response() {
-        System.out.println(
-                "Kafka Record Timestamps: \n"
-                        + "Received: " + this.lastRecordUTC + "\n"
-                        + "Metadata: " + this.kafkaUTC);
-
         return this.message;
     }
 }
