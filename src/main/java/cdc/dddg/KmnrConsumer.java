@@ -5,50 +5,49 @@ import org.apache.kafka.clients.consumer.ConsumerRecord;
 import org.eclipse.microprofile.reactive.messaging.Incoming;
 
 import javax.enterprise.context.ApplicationScoped;
-import javax.ws.rs.GET;
-import javax.ws.rs.Path;
+import javax.inject.Inject;
+import javax.transaction.Transactional;
 import java.time.Duration;
 import java.time.Instant;
+import java.util.List;
+
+import static javax.transaction.Transactional.TxType.NOT_SUPPORTED;
 
 @ApplicationScoped
-@Path("/streaming-data")
 public class KmnrConsumer {
-    String message;
-    long kafkaUnix;
-    Instant kafkaUTC;
-    Instant lastRecordUTC;
+
+    final KmnrRepository repository;
 
     /**
      * Constructor to initially produce message
      */
-    public KmnrConsumer() {
-        this.message = "timestamp: 123, topic: test, value: {\"id\":0,\"message\":\"test0\"}";
-        this.kafkaUnix = 1651570331795L;
-        this.kafkaUTC = Instant.ofEpochMilli(this.kafkaUnix);
+    @Inject
+    public KmnrConsumer(KmnrRepository repository) {
+        this.repository = repository;
     }
 
     @Incoming("kmnr")
+    @Transactional(NOT_SUPPORTED)
     public void consume(ConsumerRecord<String, GenericRecord> record) {
-        String topic = record.topic();
-        String key = record.key();
-        String value = (record.value().toString());
-        this.kafkaUnix = record.timestamp();
+        long kafkaUnix = record.timestamp();
 
         // Current UTC timestamp
-        this.lastRecordUTC = Instant.now();
+        Instant lastRecordUTC = Instant.now();
 
         // Kafka UTC timestamp
-        this.kafkaUTC = Instant.ofEpochMilli(this.kafkaUnix);
+        Instant kafkaUTC = Instant.ofEpochMilli(kafkaUnix);
 
         // Latency calculation
-        Duration latency = Duration.between(this.kafkaUTC, this.lastRecordUTC);
-        this.message = record.toString();
+        Duration latency = Duration.between(kafkaUTC, lastRecordUTC);
 
-        System.out.println("timestamp: " + this.kafkaUTC + "; topic: " + topic + "; latency: " + latency.toMillis() + " value: " + value);
+        System.out.println("timestamp: " + kafkaUTC + "; topic: " + record.topic() + "; latency: " + latency.toMillis() + "; value: " + record.value().toString());
+
+        GenericRecord entry = (GenericRecord) record.value().get("after_image");
+        if (record.value().get("before_image") == null) {
+            //new record
+            repository.saveAll(List.of(KmnrMapper.map(entry)));
+        }
+
     }
 
-    @GET
-    public String response() {
-        return this.message;
-    }
 }
