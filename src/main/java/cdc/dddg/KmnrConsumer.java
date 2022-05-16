@@ -40,14 +40,15 @@ public class KmnrConsumer {
         // Latency calculation
         Duration latency = Duration.between(kafkaUTC, lastRecordUTC);
 
-        System.out.println("timestamp: " + kafkaUTC + "; topic: " + record.topic() + "; latency: " + latency.toMillis() + "; value: " + record.value().toString());
 
         GenericRecord entry = (GenericRecord) record.value().get("after_image");
-        if (record.value().get("before_image") == null) {
+        if (record.value().get("change_op") == "I") {
             //new record
             repository.saveAll(List.of(KmnrMapper.map(entry)));
+        } else if (record.value().get("change_op") == "U") {
+            //update record
+        } else if (record.value().get("change_op") == "D") {
+            //delete record
         }
-
     }
-
 }
