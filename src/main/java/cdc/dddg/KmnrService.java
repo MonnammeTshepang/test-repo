@@ -3,6 +3,7 @@ package cdc.dddg;
 import javax.enterprise.context.ApplicationScoped;
 import javax.inject.Inject;
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 @ApplicationScoped
@@ -19,13 +20,13 @@ public class KmnrService {
         return this.kmnrRepository.findAll();
     }
 
-    public List<KmnrDto> getKmnrs() {
+    public List<Kmnr> getKmnrs() {
         List<Kmnr> kmnrs = this.kmnrRepository.findKmnrs();
-        return kmnrs.stream().map(KmnrService::convert).collect(Collectors.toList());
+        return kmnrs;
     }
 
-    private static KmnrDto convert(Kmnr kmnr) {
-        return new KmnrDto(kmnr.getKmnr(), kmnr.getKmabtlung(), kmnr.getDtanl(), kmnr.getKotxt(), kmnr.getKogr(), kmnr.getStand(), kmnr.getTxtes(), kmnr.getZeTermin());
+    public Optional<Kmnr> findByKmnr(String kmnr) {
+        return this.kmnrRepository.findById(kmnr);
     }
 }
 

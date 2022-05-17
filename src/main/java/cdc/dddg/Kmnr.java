@@ -1,21 +1,19 @@
 package cdc.dddg;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
+
+import javax.persistence.*;
 import java.io.Serializable;
+import java.time.Instant;
 import java.time.LocalDate;
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
 
 @Entity
 public class Kmnr implements Serializable {
-    @Id
-    @GeneratedValue
-    private Integer id;
+
     @Column(
             length = 6
     )
+    @Id
     private String kmnr;
     @Column(
             length = 6
@@ -64,6 +62,15 @@ public class Kmnr implements Serializable {
             length = 8
     )
     private String zeTermin;
+
+    @Column(name = "kafka_timestamp")
+    private Instant kafkaTimestamp;
+
+    @Column(name = "db2_timestamp")
+    private Instant db2Timestamp;
+
+    @Column(name = "app_timestamp")
+    private Instant appTimestamp;
 
     public Kmnr() {
     }
@@ -172,12 +179,16 @@ public class Kmnr implements Serializable {
         this.zeTermin = zeTermin;
     }
 
-    public Integer getId() {
-        return this.id;
-    }
+    public Instant getKafkaTimestamp() { return kafkaTimestamp; }
 
-    public void setId(Integer id) {
-        this.id = id;
-    }
+    public void setKafkaTimestamp(Instant kafkaTimestamp) { this.kafkaTimestamp = kafkaTimestamp; }
+
+    public Instant getDb2Timestamp() { return db2Timestamp; }
+
+    public void setDb2Timestamp(Instant db2Timestamp) { this.db2Timestamp = db2Timestamp; }
+
+    public Instant getAppTimestamp() { return appTimestamp; }
+
+    public void setAppTimestamp(Instant appTimestamp) { this.appTimestamp = appTimestamp; }
 }
 

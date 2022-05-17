@@ -2,6 +2,8 @@ package cdc.dddg;
 
 import org.apache.avro.generic.GenericRecord;
 
+import java.time.Instant;
+
 public class KmnrMapper {
     public KmnrMapper() {
     }
@@ -22,10 +24,18 @@ public class KmnrMapper {
             kmnr.setZeTermin(genericRecord.get("ze_termin").toString());
         }
         if (genericRecord.get("se_termin") != null) {
-            kmnr.setZeTermin(genericRecord.get("ze_termin").toString());
+            kmnr.setSeTermin((genericRecord.get("se_termin").toString()));
         }
 
         kmnr.setArt(genericRecord.get("art").toString());
+        return kmnr;
+    }
+
+    public static Kmnr map(GenericRecord entry, Instant db2UTC, Instant kafkaUTC, Instant appUTC) {
+        Kmnr kmnr = map(entry);
+        kmnr.setDb2Timestamp(db2UTC);
+        kmnr.setKafkaTimestamp(kafkaUTC);
+        kmnr.setAppTimestamp(appUTC);
         return kmnr;
     }
 }

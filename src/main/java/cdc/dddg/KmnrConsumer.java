@@ -10,6 +10,7 @@ import javax.transaction.Transactional;
 import java.time.Duration;
 import java.time.Instant;
 import java.util.List;
+import java.util.Objects;
 
 import static javax.transaction.Transactional.TxType.NOT_SUPPORTED;
 
@@ -32,23 +33,38 @@ public class KmnrConsumer {
         long kafkaUnix = record.timestamp();
 
         // Current UTC timestamp
-        Instant lastRecordUTC = Instant.now();
+        Instant appUTC = Instant.now();
 
         // Kafka UTC timestamp
         Instant kafkaUTC = Instant.ofEpochMilli(kafkaUnix);
 
         // Latency calculation
-        Duration latency = Duration.between(kafkaUTC, lastRecordUTC);
+        Duration kafkaLatency = Duration.between(kafkaUTC, appUTC);
+        String db2Timestamp = record.value().get("timestamp").toString();
+        Instant db2UTC = Instant.parse(db2Timestamp);
+        Duration db2Latency = Duration.between(db2UTC, appUTC);
+        System.out.println("topic: " + record.topic() + "; DB2Timestamp: " + db2UTC + "; KafkaTimestamp: " + kafkaUTC + "; AppTimestamp: " + appUTC + "; latency:DB-App " + db2Latency.toMillis() + "; latency:Kafka-App " + kafkaLatency.toMillis() + "; value: " + record.value().toString());
 
-
-        GenericRecord entry = (GenericRecord) record.value().get("after_image");
-        if (record.value().get("change_op") == "I") {
-            //new record
-            repository.saveAll(List.of(KmnrMapper.map(entry)));
-        } else if (record.value().get("change_op") == "U") {
-            //update record
-        } else if (record.value().get("change_op") == "D") {
-            //delete record
+        if (record.value().get("alias").toString().equals("TKDN01")) {
+            processRecord(record.value(), db2UTC, kafkaUTC, appUTC);
         }
     }
+
+    private void processRecord(GenericRecord record, Instant db2UTC, Instant kafkaUTC, Instant appUTC) {
+        GenericRecord entry = (GenericRecord) record.get("after_image");
+        if (Objects.equals(record.get("change_op").toString(), "I")) {
+            //new record
+            repository.saveAll(List.of(KmnrMapper.map(entry, db2UTC, kafkaUTC, appUTC)));
+        } else if (Objects.equals(record.get("change_op").toString(), "U")) {
+            //update record
+            repository.saveAll(List.of(KmnrMapper.map(entry, db2UTC, kafkaUTC, appUTC)));
+        } else if (Objects.equals(record.get("change_op").toString(), "D")) {
+            //delete record
+        } else {
+            System.out.println("UNKNOWN");
+        }
+
+    }
 }
+
+
