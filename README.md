@@ -1,8 +1,7 @@
-# code-with-quarkus Project
+# stream4-remote-sample-app Project
 
-This project uses Quarkus, the Supersonic Subatomic Java Framework.
+The purpose of this Application is to consume entries from kafka, log all timestamp (db, kafka app) and measure latency between these timestamps.
 
-If you want to learn more about Quarkus, please visit its website: https://quarkus.io/ .
 
 ## Running the application in dev mode
 
@@ -47,10 +46,31 @@ You can then execute your native executable with: `./target/code-with-quarkus-1.
 
 If you want to learn more about building native executables, please consult https://quarkus.io/guides/maven-tooling.
 
-## Provided Code
+## Docker build
+Steps for docker image build are described in the proper dockerfile files
 
-### RESTEasy Reactive
+## Kafka Configuration
+Kafka configuration is set in application.properties file. Additionaly following secrets should be set e.g. as environment variables.
+```
+mp.messaging.incoming.kmnr.schema.registry.ssl.truststore.password
+kafka.sasl.jaas.config
+mp.messaging.incoming.kmnr.basic.auth.user.info
+```
 
-Easily start your Reactive RESTful Web Services
+##Database configuration
+Application is configured to work with Postgresql database. Following secret need to be set e.g. as environment variable
+```aidl
+quarkus.datasource.password
+```
 
-[Related guide section...](https://quarkus.io/guides/getting-started-reactive#reactive-jax-rs-resources)
+##Rest endpoints
+Following rest endpoints are available
+
+* ```/kmnr``` - list all kmnr entrys from the database
+* ```/kmnr?kmnr=<kmnr_id>``` - get information about the given kmnr
+* ```/filtered-list``` - get all kmnr filtered with following query
+```@Query("SELECT t0 FROM Kmnr t0 where t0.stand IN ('KONZEPT', 'UNSCH', 'ABWERL', 'ANTRAG') and  t0.kmnr not like 'A%'")```
+
+##Documentation
+
+For more information please check [confluence documentation](https://atc.bmwgroup.net/confluence/display/BMWMFM/2.+Using+quarkus+application+as+kafka+consumer)

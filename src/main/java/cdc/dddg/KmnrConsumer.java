@@ -45,9 +45,8 @@ public class KmnrConsumer {
         Duration db2Latency = Duration.between(db2UTC, appUTC);
         System.out.println("topic: " + record.topic() + "; DB2Timestamp: " + db2UTC + "; KafkaTimestamp: " + kafkaUTC + "; AppTimestamp: " + appUTC + "; latency:DB-App " + db2Latency.toMillis() + "; latency:Kafka-App " + kafkaLatency.toMillis() + "; value: " + record.value().toString());
 
-        if (record.value().get("alias").toString().equals("TKDN01")) {
-            processRecord(record.value(), db2UTC, kafkaUTC, appUTC);
-        }
+        processRecord(record.value(), db2UTC, kafkaUTC, appUTC);
+
     }
 
     private void processRecord(GenericRecord record, Instant db2UTC, Instant kafkaUTC, Instant appUTC) {
@@ -60,6 +59,8 @@ public class KmnrConsumer {
             repository.saveAll(List.of(KmnrMapper.map(entry, db2UTC, kafkaUTC, appUTC)));
         } else if (Objects.equals(record.get("change_op").toString(), "D")) {
             //delete record
+            //intentional commented to store the kmnr information in database for longer time.
+            //repository.deleteById(entry.get("kmnr").toString());
         } else {
             System.out.println("UNKNOWN");
         }
