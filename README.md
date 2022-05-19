@@ -50,12 +50,14 @@ If you want to learn more about building native executables, please consult http
 Steps for docker image build are described in the proper dockerfile files
 
 ## Kafka Configuration
-Kafka configuration is set in application.properties file. Additionaly following secrets should be set e.g. as environment variables.
+Kafka configuration is set in application.properties file. Additionally, following secrets should be set e.g. as environment variables.
 ```
 mp.messaging.incoming.kmnr.schema.registry.ssl.truststore.password
 kafka.sasl.jaas.config
 mp.messaging.incoming.kmnr.basic.auth.user.info
 ```
+
+
 
 ##Database configuration
 Application is configured to work with Postgresql database. Following secret need to be set e.g. as environment variable
@@ -72,5 +74,4 @@ Following rest endpoints are available
 ```@Query("SELECT t0 FROM Kmnr t0 where t0.stand IN ('KONZEPT', 'UNSCH', 'ABWERL', 'ANTRAG') and  t0.kmnr not like 'A%'")```
 
 ##Documentation
-
 For more information please check [confluence documentation](https://atc.bmwgroup.net/confluence/display/BMWMFM/2.+Using+quarkus+application+as+kafka+consumer)

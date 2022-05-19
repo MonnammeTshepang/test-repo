@@ -53,10 +53,10 @@ public class KmnrConsumer {
         GenericRecord entry = (GenericRecord) record.get("after_image");
         if (Objects.equals(record.get("change_op").toString(), "I")) {
             //new record
-            repository.saveAll(List.of(KmnrMapper.map(entry, db2UTC, kafkaUTC, appUTC)));
+            repository.save(KmnrMapper.map(entry, db2UTC, kafkaUTC, appUTC));
         } else if (Objects.equals(record.get("change_op").toString(), "U")) {
             //update record
-            repository.saveAll(List.of(KmnrMapper.map(entry, db2UTC, kafkaUTC, appUTC)));
+            repository.save(KmnrMapper.map(entry, db2UTC, kafkaUTC, appUTC));
         } else if (Objects.equals(record.get("change_op").toString(), "D")) {
             //delete record
             //intentional commented to store the kmnr information in database for longer time.
