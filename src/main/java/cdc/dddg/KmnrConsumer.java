@@ -45,18 +45,18 @@ public class KmnrConsumer {
         Duration db2Latency = Duration.between(db2UTC, appUTC);
         System.out.println("topic: " + record.topic() + "; DB2Timestamp: " + db2UTC + "; KafkaTimestamp: " + kafkaUTC + "; AppTimestamp: " + appUTC + "; latency:DB-App " + db2Latency.toMillis() + "; latency:Kafka-App " + kafkaLatency.toMillis() + "; value: " + record.value().toString());
 
-        processRecord(record.value(), db2UTC, kafkaUTC, appUTC);
+        processRecord(record.value(), db2UTC, kafkaUTC, appUTC, db2Latency, kafkaLatency);
 
     }
 
-    private void processRecord(GenericRecord record, Instant db2UTC, Instant kafkaUTC, Instant appUTC) {
+    private void processRecord(GenericRecord record, Instant db2UTC, Instant kafkaUTC, Instant appUTC, Duration db2Latency, Duration kafkaLatency) {
         GenericRecord entry = (GenericRecord) record.get("after_image");
         if (Objects.equals(record.get("change_op").toString(), "I")) {
             //new record
-            repository.save(KmnrMapper.map(entry, db2UTC, kafkaUTC, appUTC));
+            repository.save(KmnrMapper.map(entry, db2UTC, kafkaUTC, appUTC, db2Latency, kafkaLatency));
         } else if (Objects.equals(record.get("change_op").toString(), "U")) {
             //update record
-            repository.save(KmnrMapper.map(entry, db2UTC, kafkaUTC, appUTC));
+            repository.save(KmnrMapper.map(entry, db2UTC, kafkaUTC, appUTC, db2Latency, kafkaLatency));
         } else if (Objects.equals(record.get("change_op").toString(), "D")) {
             //delete record
             //intentional commented to store the kmnr information in database for longer time.

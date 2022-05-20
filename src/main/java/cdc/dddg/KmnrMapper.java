@@ -2,6 +2,7 @@ package cdc.dddg;
 
 import org.apache.avro.generic.GenericRecord;
 
+import java.time.Duration;
 import java.time.Instant;
 import java.time.LocalDate;
 
@@ -38,11 +39,13 @@ public class KmnrMapper {
         return kmnr;
     }
 
-    public static Kmnr map(GenericRecord entry, Instant db2UTC, Instant kafkaUTC, Instant appUTC) {
+    public static Kmnr map(GenericRecord entry, Instant db2UTC, Instant kafkaUTC, Instant appUTC, Duration db2Latency, Duration kafkaLatency) {
         Kmnr kmnr = map(entry);
         kmnr.setDb2Timestamp(db2UTC);
         kmnr.setKafkaTimestamp(kafkaUTC);
         kmnr.setAppTimestamp(appUTC);
+        kmnr.setDb2AppLatency(db2Latency.toMillis());
+        kmnr.setKafkaAppLatency(kafkaLatency.toMillis());
         return kmnr;
     }
 }
