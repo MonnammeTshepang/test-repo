@@ -61,7 +61,7 @@ public class KmnrConsumer {
         } else if (Objects.equals(record.get("change_op").toString(), "D")) {
             //delete record
             //intentional commented to store the kmnr information in database for longer time.
-            GenericRecord deletedEntry = (GenericRecord) record.get("before_image");
+            //GenericRecord deletedEntry = (GenericRecord) record.get("before_image");
             //repository.deleteById(deletedEntry.get("kmnr").toString());
         } else {
             System.out.println("UNKNOWN");
