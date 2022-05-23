@@ -9,7 +9,6 @@ import javax.inject.Inject;
 import javax.transaction.Transactional;
 import java.time.Duration;
 import java.time.Instant;
-import java.util.List;
 import java.util.Objects;
 
 import static javax.transaction.Transactional.TxType.NOT_SUPPORTED;
@@ -50,17 +49,20 @@ public class KmnrConsumer {
     }
 
     private void processRecord(GenericRecord record, Instant db2UTC, Instant kafkaUTC, Instant appUTC, Duration db2Latency, Duration kafkaLatency) {
-        GenericRecord entry = (GenericRecord) record.get("after_image");
+
         if (Objects.equals(record.get("change_op").toString(), "I")) {
             //new record
+            GenericRecord entry = (GenericRecord) record.get("after_image");
             repository.save(KmnrMapper.map(entry, db2UTC, kafkaUTC, appUTC, db2Latency, kafkaLatency));
         } else if (Objects.equals(record.get("change_op").toString(), "U")) {
             //update record
+            GenericRecord entry = (GenericRecord) record.get("after_image");
             repository.save(KmnrMapper.map(entry, db2UTC, kafkaUTC, appUTC, db2Latency, kafkaLatency));
         } else if (Objects.equals(record.get("change_op").toString(), "D")) {
             //delete record
             //intentional commented to store the kmnr information in database for longer time.
-            //repository.deleteById(entry.get("kmnr").toString());
+            GenericRecord deletedEntry = (GenericRecord) record.get("before_image");
+            //repository.deleteById(deletedEntry.get("kmnr").toString());
         } else {
             System.out.println("UNKNOWN");
         }
