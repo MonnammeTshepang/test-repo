@@ -1,21 +1,19 @@
 package cdc.dddg.model;
 
-import javax.persistence.Basic;
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Id;
+import javax.persistence.*;
 import java.math.BigDecimal;
 import java.math.BigInteger;
-import java.sql.Date;
+import java.time.LocalDate;
 import java.util.Objects;
 
 @Entity
+@Table(schema = "kdt", name = "tkdy01")
 public class Tkdy01 {
     private String typnr;
     private String abgas;
     private String antri;
-    private Date ausdt;
-    private Date eindt;
+    private LocalDate ausdt;
+    private LocalDate eindt;
     private String getri;
     private BigDecimal hubr;
     private String karos;
@@ -28,13 +26,13 @@ public class Tkdy01 {
     private String model;
     private String bemer;
     private String ausst;
-    private Date anlag;
+    private LocalDate anlag;
     private String gehkz;
     private String ebezd;
     private String land;
-    private Date aendg;
+    private LocalDate aendg;
     private String modja;
-    private Date guelt;
+    private LocalDate guelt;
     private String motor;
     private String ebaur;
     private String star;
@@ -42,7 +40,7 @@ public class Tkdy01 {
     private String leity;
     private String auttyp;
     private String archivKz;
-    private Date archivDatum;
+    private LocalDate archivDatum;
     private String archivId;
     private String alltyp;
     private String fzgtyp;
@@ -93,21 +91,21 @@ public class Tkdy01 {
 
     @Basic
     @Column(name = "ausdt", nullable = true)
-    public Date getAusdt() {
+    public LocalDate getAusdt() {
         return ausdt;
     }
 
-    public void setAusdt(Date ausdt) {
+    public void setAusdt(LocalDate ausdt) {
         this.ausdt = ausdt;
     }
 
     @Basic
     @Column(name = "eindt", nullable = true)
-    public Date getEindt() {
+    public LocalDate getEindt() {
         return eindt;
     }
 
-    public void setEindt(Date eindt) {
+    public void setEindt(LocalDate eindt) {
         this.eindt = eindt;
     }
 
@@ -233,11 +231,11 @@ public class Tkdy01 {
 
     @Basic
     @Column(name = "anlag", nullable = true)
-    public Date getAnlag() {
+    public LocalDate getAnlag() {
         return anlag;
     }
 
-    public void setAnlag(Date anlag) {
+    public void setAnlag(LocalDate anlag) {
         this.anlag = anlag;
     }
 
@@ -273,11 +271,11 @@ public class Tkdy01 {
 
     @Basic
     @Column(name = "aendg", nullable = true)
-    public Date getAendg() {
+    public LocalDate getAendg() {
         return aendg;
     }
 
-    public void setAendg(Date aendg) {
+    public void setAendg(LocalDate aendg) {
         this.aendg = aendg;
     }
 
@@ -293,11 +291,11 @@ public class Tkdy01 {
 
     @Basic
     @Column(name = "guelt", nullable = true)
-    public Date getGuelt() {
+    public LocalDate getGuelt() {
         return guelt;
     }
 
-    public void setGuelt(Date guelt) {
+    public void setGuelt(LocalDate guelt) {
         this.guelt = guelt;
     }
 
@@ -373,11 +371,11 @@ public class Tkdy01 {
 
     @Basic
     @Column(name = "archiv_datum", nullable = true)
-    public Date getArchivDatum() {
+    public LocalDate getArchivDatum() {
         return archivDatum;
     }
 
-    public void setArchivDatum(Date archivDatum) {
+    public void setArchivDatum(LocalDate archivDatum) {
         this.archivDatum = archivDatum;
     }
 

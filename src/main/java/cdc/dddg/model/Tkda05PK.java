@@ -1,17 +1,18 @@
 package cdc.dddg.model;
 
 import javax.persistence.Column;
+import javax.persistence.Embeddable;
 import javax.persistence.Id;
 import java.io.Serializable;
 import java.util.Objects;
 
+@Embeddable
 public class Tkda05PK implements Serializable {
     private String proda;
     private String prima;
     private String hist;
 
     @Column(name = "proda", nullable = false, length = -1)
-    @Id
     public String getProda() {
         return proda;
     }
@@ -21,7 +22,6 @@ public class Tkda05PK implements Serializable {
     }
 
     @Column(name = "prima", nullable = false, length = 3)
-    @Id
     public String getPrima() {
         return prima;
     }
@@ -31,7 +31,6 @@ public class Tkda05PK implements Serializable {
     }
 
     @Column(name = "hist", nullable = false, length = -1)
-    @Id
     public String getHist() {
         return hist;
     }

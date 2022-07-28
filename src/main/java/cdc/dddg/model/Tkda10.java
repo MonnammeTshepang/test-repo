@@ -1,12 +1,10 @@
 package cdc.dddg.model;
 
-import javax.persistence.Basic;
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Id;
+import javax.persistence.*;
 import java.util.Objects;
 
 @Entity
+@Table(schema = "kdt", name = "tkda10")
 public class Tkda10 {
     private String lack;
     private String lart;

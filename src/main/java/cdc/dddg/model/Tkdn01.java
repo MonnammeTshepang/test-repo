@@ -1,40 +1,41 @@
 package cdc.dddg.model;
 
 import javax.persistence.*;
-import java.sql.Date;
-import java.sql.Timestamp;
+import java.math.BigInteger;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.Objects;
 
 @Entity
 @Table(schema = "kdt", name = "tkdn01")
 public class Tkdn01 {
     private String kmnr;
-    private long agbst;
+    private BigInteger agbst;
     private String txtes;
     private String kzets;
     private String kmpak;
     private String kotxt;
     private String kogr;
-    private Date laend;
+    private LocalDate laend;
     private String sz;
     private String stand;
     private String erstl;
     private String kmabtlung;
-    private Date dtanl;
-    private Date dtaen;
+    private LocalDate dtanl;
+    private LocalDate dtaen;
     private String kzaus;
     private String art;
     private String jahr;
     private String lfd;
-    private long solltt;
-    private long sollmm;
+    private BigInteger solltt;
+    private BigInteger sollmm;
     private Integer solljj;
     private String umdrehKz;
     private String reakt;
     private String neuanUid;
     private String dateskz;
-    private Date stadt;
-    private Date zielTermin;
+    private LocalDate stadt;
+    private LocalDate zielTermin;
     private String archivKz;
     private String herku;
     private String uidaen;
@@ -45,17 +46,19 @@ public class Tkdn01 {
     private String pepPhase;
     private String qRisiko;
     private String prfkz;
-    private Timestamp prfdat;
+    private LocalDateTime prfdat;
     private String seTermin;
     private String zeTermin;
     private String admin;
     private String telefonnrAnleger;
     private String telefonnrBearbeiter;
     private String pkrKz;
-    private Date aeabschluss;
+    private LocalDate aeabschluss;
     private String softwareKz;
     private String onlineSynchroStatus;
     private String onlineSynchroFreigabe;
+
+
 
     @Id
     @Column(name = "kmnr", nullable = false, length = 6)
@@ -69,11 +72,11 @@ public class Tkdn01 {
 
     @Basic
     @Column(name = "agbst", nullable = false, precision = 0)
-    public long getAgbst() {
+    public BigInteger getAgbst() {
         return agbst;
     }
 
-    public void setAgbst(long agbst) {
+    public void setAgbst(BigInteger agbst) {
         this.agbst = agbst;
     }
 
@@ -129,11 +132,11 @@ public class Tkdn01 {
 
     @Basic
     @Column(name = "laend", nullable = true)
-    public Date getLaend() {
+    public LocalDate getLaend() {
         return laend;
     }
 
-    public void setLaend(Date laend) {
+    public void setLaend(LocalDate laend) {
         this.laend = laend;
     }
 
@@ -179,21 +182,21 @@ public class Tkdn01 {
 
     @Basic
     @Column(name = "dtanl", nullable = true)
-    public Date getDtanl() {
+    public LocalDate getDtanl() {
         return dtanl;
     }
 
-    public void setDtanl(Date dtanl) {
+    public void setDtanl(LocalDate dtanl) {
         this.dtanl = dtanl;
     }
 
     @Basic
     @Column(name = "dtaen", nullable = true)
-    public Date getDtaen() {
+    public LocalDate getDtaen() {
         return dtaen;
     }
 
-    public void setDtaen(Date dtaen) {
+    public void setDtaen(LocalDate dtaen) {
         this.dtaen = dtaen;
     }
 
@@ -239,21 +242,21 @@ public class Tkdn01 {
 
     @Basic
     @Column(name = "solltt", nullable = true, precision = 0)
-    public long getSolltt() {
+    public BigInteger getSolltt() {
         return solltt;
     }
 
-    public void setSolltt(long solltt) {
+    public void setSolltt(BigInteger solltt) {
         this.solltt = solltt;
     }
 
     @Basic
     @Column(name = "sollmm", nullable = true, precision = 0)
-    public long getSollmm() {
+    public BigInteger getSollmm() {
         return sollmm;
     }
 
-    public void setSollmm(long sollmm) {
+    public void setSollmm(BigInteger sollmm) {
         this.sollmm = sollmm;
     }
 
@@ -309,21 +312,21 @@ public class Tkdn01 {
 
     @Basic
     @Column(name = "stadt", nullable = true)
-    public Date getStadt() {
+    public LocalDate getStadt() {
         return stadt;
     }
 
-    public void setStadt(Date stadt) {
+    public void setStadt(LocalDate stadt) {
         this.stadt = stadt;
     }
 
     @Basic
     @Column(name = "ziel_termin", nullable = true)
-    public Date getZielTermin() {
+    public LocalDate getZielTermin() {
         return zielTermin;
     }
 
-    public void setZielTermin(Date zielTermin) {
+    public void setZielTermin(LocalDate zielTermin) {
         this.zielTermin = zielTermin;
     }
 
@@ -429,11 +432,11 @@ public class Tkdn01 {
 
     @Basic
     @Column(name = "prfdat", nullable = true)
-    public Timestamp getPrfdat() {
+    public LocalDateTime getPrfdat() {
         return prfdat;
     }
 
-    public void setPrfdat(Timestamp prfdat) {
+    public void setPrfdat(LocalDateTime prfdat) {
         this.prfdat = prfdat;
     }
 
@@ -499,11 +502,11 @@ public class Tkdn01 {
 
     @Basic
     @Column(name = "aeabschluss", nullable = true)
-    public Date getAeabschluss() {
+    public LocalDate getAeabschluss() {
         return aeabschluss;
     }
 
-    public void setAeabschluss(Date aeabschluss) {
+    public void setAeabschluss(LocalDate aeabschluss) {
         this.aeabschluss = aeabschluss;
     }
 

@@ -13,6 +13,7 @@ import javax.transaction.Transactional;
 import java.time.Duration;
 import java.time.Instant;
 import java.util.Objects;
+import java.util.function.Function;
 
 import static javax.transaction.Transactional.TxType.NOT_SUPPORTED;
 
@@ -43,7 +44,7 @@ public class KmnrConsumer {
     private void persistDataChange(ConsumerRecord<String, GenericRecord> record) {
         String topic = record.topic();
 
-        RecordMapper mapper = modelMappingService.getMapper(topic);
+        Function<GenericRecord, Object> mapper = modelMappingService.getMapper(topic);
         if (mapper != null) {
             if (!Objects.equals(record.value().get("change_op").toString(), "I")
                     && ! Objects.equals(record.value().get("change_op").toString(), "U")) {
@@ -52,8 +53,7 @@ public class KmnrConsumer {
             }
             GenericRecord entry = (GenericRecord) record.value().get("after_image");
 
-
-            Object entity = mapper.map(entry);
+            Object entity = mapper.apply(entry);
             JpaRepository repository = modelMappingService.getRepository(topic);
             repository.save(entity);
         } else {

@@ -4,45 +4,23 @@ import javax.persistence.*;
 import java.util.Objects;
 
 @Entity
-@IdClass(Tkda05PK.class)
+@Table(schema = "kdt", name = "tkda05")
 public class Tkda05 {
-    private String proda;
-    private String prima;
-    private String hist;
+
+    private Tkda05PK tkda05PK;
     private String awahl;
     private String sala;
     private String saben;
     private String gkz;
     private String gehkz;
 
-    @Id
-    @Column(name = "proda", nullable = false, length = -1)
-    public String getProda() {
-        return proda;
+    @EmbeddedId
+    public Tkda05PK getTkda05PK() {
+        return tkda05PK;
     }
 
-    public void setProda(String proda) {
-        this.proda = proda;
-    }
-
-    @Id
-    @Column(name = "prima", nullable = false, length = 3)
-    public String getPrima() {
-        return prima;
-    }
-
-    public void setPrima(String prima) {
-        this.prima = prima;
-    }
-
-    @Id
-    @Column(name = "hist", nullable = false, length = -1)
-    public String getHist() {
-        return hist;
-    }
-
-    public void setHist(String hist) {
-        this.hist = hist;
+    public void setTkda05PK(Tkda05PK tkda05PK) {
+        this.tkda05PK = tkda05PK;
     }
 
     @Basic
@@ -98,13 +76,13 @@ public class Tkda05 {
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
+        if (!(o instanceof Tkda05)) return false;
         Tkda05 tkda05 = (Tkda05) o;
-        return Objects.equals(proda, tkda05.proda) && Objects.equals(prima, tkda05.prima) && Objects.equals(hist, tkda05.hist) && Objects.equals(awahl, tkda05.awahl) && Objects.equals(sala, tkda05.sala) && Objects.equals(saben, tkda05.saben) && Objects.equals(gkz, tkda05.gkz) && Objects.equals(gehkz, tkda05.gehkz);
+        return Objects.equals(tkda05PK, tkda05.tkda05PK) && Objects.equals(awahl, tkda05.awahl) && Objects.equals(sala, tkda05.sala) && Objects.equals(saben, tkda05.saben) && Objects.equals(gkz, tkda05.gkz) && Objects.equals(gehkz, tkda05.gehkz);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(proda, prima, hist, awahl, sala, saben, gkz, gehkz);
+        return Objects.hash(tkda05PK, awahl, sala, saben, gkz, gehkz);
     }
 }
