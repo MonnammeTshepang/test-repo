@@ -2,25 +2,26 @@ package cdc.dddg.health;
 
 import org.apache.kafka.clients.consumer.ConsumerRecord;
 import org.eclipse.microprofile.reactive.messaging.Incoming;
+import org.jboss.logging.Logger;
 
 import javax.enterprise.context.ApplicationScoped;
 import javax.inject.Inject;
 import javax.transaction.Transactional;
-import java.time.Duration;
 import java.time.Instant;
 
 import static javax.transaction.Transactional.TxType.NOT_SUPPORTED;
+
 
 @ApplicationScoped
 public class HealthConsumer {
 
     private final HealthDataRepository repository;
+    private static final Logger LOG = Logger.getLogger(HealthConsumer.class);
 
     @Inject
     public HealthConsumer(HealthDataRepository repository) {
         this.repository = repository;
     }
-
 
     @Incoming("health")
     @Transactional(NOT_SUPPORTED)
@@ -33,11 +34,8 @@ public class HealthConsumer {
         // Kafka UTC timestamp
         Instant kafkaUTC = Instant.ofEpochMilli(kafkaUnix);
 
-        // Latency calculation
-        Duration kafkaLatency = Duration.between(kafkaUTC, appUTC);
-
-        System.out.println("topic: " + record.topic() + "; KafkaTimestamp: " + kafkaUTC + "; AppTimestamp: " + appUTC
-                + ";  latency:Kafka-App " + kafkaLatency.toMillis() + "; value: " + record.value());
+        LOG.info("Health, topic: \" + record.topic() + \"; KafkaTimestamp: \" + kafkaUTC + \"; AppTimestamp: \" + appUTC " +
+                         "\";  latency:Kafka-App \" + kafkaLatency.toMillis() + \"; value: \" + record.value()");
         repository.save(new HealthData(kafkaUTC, appUTC, record.value()));
     }
 }
