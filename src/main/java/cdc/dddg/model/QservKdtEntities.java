@@ -4,13 +4,15 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-public enum QservEntities {
+public enum QservKdtEntities {
     TKDN01,
     TKDA05,
     TKDA10,
-    TKDY01;
+    TKDY01,
+    TDBDDP,
+    TDBDDC;
 
-    private static final Map<QservEntities, List<String>> FIELDS = new HashMap<>();
+    private static final Map<QservKdtEntities, List<String>> FIELDS = new HashMap<>();
 
     static {
         FIELDS.put(TKDN01,
@@ -29,9 +31,11 @@ public enum QservEntities {
                            "fahrzeugdif", "fzgtyp", "gehkz", "getri", "guelt", "hubr", "hybrid", "karos", "kzstu", "land",
                            "leist", "leity", "lenk", "model", "modja", "montageland", "motor", "motorvar", "msport", "prodart",
                            "pseudo", "star", "terkz", "tsart", "tuer", "typ_altv", "typart", "typhist", "typnr", "typsrt"));
+        FIELDS.put(TDBDDP, List.of("pnum", "timestamp", "plexmem"));
+        FIELDS.put(TDBDDC, List.of("pnum", "timestamp", "plexmem"));
     }
 
-    public static List<String> getFields(QservEntities name) {
+    public static List<String> getFields(QservKdtEntities name) {
         return FIELDS.get(name);
     }
 }
