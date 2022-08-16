@@ -5,6 +5,7 @@ import cdc.dddg.transfermetadata.TransferTimingsRepository;
 import org.apache.avro.generic.GenericRecord;
 import org.apache.kafka.clients.consumer.ConsumerRecord;
 import org.eclipse.microprofile.reactive.messaging.Incoming;
+import org.jboss.logging.Logger;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import javax.enterprise.context.ApplicationScoped;
@@ -19,6 +20,8 @@ import static javax.transaction.Transactional.TxType.NOT_SUPPORTED;
 
 @ApplicationScoped
 public class KmnrConsumer {
+
+    private static final Logger LOG = Logger.getLogger(KmnrConsumer.class);
 
     private final ModelMappingService modelMappingService;
 
@@ -57,7 +60,9 @@ public class KmnrConsumer {
             JpaRepository repository = modelMappingService.getRepository(topic);
             repository.save(entity);
         } else {
-            System.out.println("topic with no config yet " + topic);
+            String recordsSchema = record.value().getSchema().toString(true);
+            LOG.info("topic with no config yet " + topic);
+            LOG.info(recordsSchema);
         }
     }
 

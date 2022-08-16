@@ -34,7 +34,7 @@ public class HealthConsumer {
         // Kafka UTC timestamp
         Instant kafkaUTC = Instant.ofEpochMilli(kafkaUnix);
 
-        LOG.info("Health, topic: \" + record.topic() + \"; KafkaTimestamp: \" + kafkaUTC + \"; AppTimestamp: \" + appUTC " +
+        LOG.debug("Health, topic: \" + record.topic() + \"; KafkaTimestamp: \" + kafkaUTC + \"; AppTimestamp: \" + appUTC " +
                          "\";  latency:Kafka-App \" + kafkaLatency.toMillis() + \"; value: \" + record.value()");
         repository.save(new HealthData(kafkaUTC, appUTC, record.value()));
     }
