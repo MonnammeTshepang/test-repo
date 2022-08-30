@@ -57,9 +57,9 @@ public class KmnrConsumer {
 
         Function<GenericRecord, Object> mapper = modelMappingService.getMapper(topic);
         if (mapper != null) {
-            if (!Objects.equals(record.value().get("change_op").toString(), "I")
-                    && !Objects.equals(record.value().get("change_op").toString(), "U")) {
-                System.out.println("not a I/U operation");
+            if (Objects.equals(record.value().get("change_op").toString(), "D")
+                    || !record.value().hasField("after_image")) {
+                LOG.debug("not a I/U operation");
                 return;
             }
             GenericRecord entry = (GenericRecord) record.value().get("after_image");
