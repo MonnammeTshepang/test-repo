@@ -2,8 +2,8 @@ package cdc.dddg.dbt.model;
 
 import javax.persistence.Basic;
 import javax.persistence.Column;
+import javax.persistence.EmbeddedId;
 import javax.persistence.Entity;
-import javax.persistence.Id;
 import javax.persistence.Table;
 import java.math.BigInteger;
 import java.time.LocalDateTime;
@@ -13,19 +13,18 @@ import java.util.Objects;
 @Table(schema = "dbt", name = "tdbddc")
 public class Tdbddc {
 
-    private BigInteger pnum;
+    private TdbddcPK tdbddcPK;
     private LocalDateTime timestamp;
     private String plexmem;
+    private BigInteger updatecolc = BigInteger.ZERO;
 
-
-    @Id
-    @Column(name = "pnum", nullable = false)
-    public BigInteger getPnum() {
-        return pnum;
+    @EmbeddedId
+    public TdbddcPK getTdbddcPK() {
+        return tdbddcPK;
     }
 
-    public void setPnum(BigInteger pnum) {
-        this.pnum = pnum;
+    public void setTdbddcPK(TdbddcPK tdbddcPK) {
+        this.tdbddcPK = tdbddcPK;
     }
 
     @Basic
@@ -48,19 +47,29 @@ public class Tdbddc {
         this.plexmem = plexmem;
     }
 
+    @Basic
+    @Column(name = "updatecolc", nullable = true)
+    public BigInteger getUpdatecolc() {
+        return updatecolc;
+    }
+
+    public void setUpdatecolc(BigInteger updatecolc) {
+        this.updatecolc = updatecolc;
+    }
 
     @Override
     public boolean equals(Object o) {
+
         if (this == o) return true;
         if (!(o instanceof Tdbddc)) return false;
         Tdbddc tdbddc = (Tdbddc) o;
-        return Objects.equals(pnum, tdbddc.pnum) && Objects.equals(timestamp,
-                                                                   tdbddc.timestamp) && Objects.equals(
-                plexmem, tdbddc.plexmem);
+        return Objects.equals(tdbddcPK, tdbddc.tdbddcPK) && Objects.equals(timestamp,
+                                                                           tdbddc.timestamp) && Objects.equals(
+                plexmem, tdbddc.plexmem) && Objects.equals(updatecolc, tdbddc.updatecolc);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(pnum, timestamp, plexmem);
+        return Objects.hash(tdbddcPK, timestamp, plexmem, updatecolc);
     }
 }

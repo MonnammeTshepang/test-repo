@@ -1,17 +1,28 @@
-create schema dbt;
+create schema DBT;
 
-create table dbt.tdbddp
+create table DBT.TDBDDC
 (
-    pnum      bigint PRIMARY KEY,
-    timestamp timestamptz,
-    plexmem   varchar(500)
+    PNUM            INTEGER   not null,
+    CNUM            INTEGER   not null,
+    TIMESTAMP       TIMESTAMP not null default current_timestamp,
+    PLEXMEM         CHAR(8)   not null,
+    UPDATECOLC      INTEGER   not null default 0,
+    db2_timestamp   timestamptz,
+    kafka_timestamp timestamptz,
+    change_tist     timestamptz,
+    primary key (PNUM, CNUM)
 );
 
-create table dbt.tdbddc
+CREATE TABLE DBT.TDBDDP
 (
-    pnum      bigint PRIMARY KEY,
-    timestamp timestamptz,
-    plexmem   varchar(500)
+    PNUM            INTEGER   NOT NULL,
+    TIMESTAMP       TIMESTAMP NOT NULL default current_timestamp,
+    PLEXMEM         CHAR(8)   NOT NULL,
+    UPDATECOLP      INTEGER   NOT NULL default 0,
+    db2_timestamp   timestamptz,
+    kafka_timestamp timestamptz,
+    change_tist     timestamptz,
+    PRIMARY KEY (PNUM)
 );
 
 CREATE OR REPLACE FUNCTION update_change_tist()
@@ -27,12 +38,10 @@ CREATE TRIGGER update_change_tist
     FOR EACH ROW
     EXECUTE PROCEDURE update_change_tist();
 
-
 CREATE TRIGGER insert_change_tist
     BEFORE INSERT ON dbt.tdbddp
     FOR EACH ROW
     EXECUTE PROCEDURE update_change_tist();
-
 
 CREATE TRIGGER update_change_tist
     BEFORE UPDATE ON dbt.tdbddc

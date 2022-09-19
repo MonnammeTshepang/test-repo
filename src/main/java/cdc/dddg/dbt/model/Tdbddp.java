@@ -15,7 +15,7 @@ public class Tdbddp {
     private BigInteger pnum;
     private LocalDateTime timestamp;
     private String plexmem;
-
+    private BigInteger updatecolp = BigInteger.ZERO;
 
     @Id
     @Column(name = "pnum", nullable = false)
@@ -45,6 +45,16 @@ public class Tdbddp {
 
     public void setPlexmem(String plexmem) {
         this.plexmem = plexmem;
+    }
+
+    @Basic
+    @Column(name = "updatecolp", nullable = false)
+    public BigInteger getUpdatecolp() {
+        return updatecolp;
+    }
+
+    public void setUpdatecolp(BigInteger updatecolp) {
+        this.updatecolp = updatecolp;
     }
 
     @Override
