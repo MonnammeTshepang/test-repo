@@ -1,6 +1,7 @@
 package cdc.dddg;
 
 import cdc.dddg.dbt.model.DbtMapper;
+import cdc.dddg.dbt.model.TdbddcRepository;
 import cdc.dddg.dbt.model.TdbddpRepository;
 import cdc.dddg.model.KdtMapper;
 import cdc.dddg.model.QservKdtEntities;
@@ -33,6 +34,8 @@ public class ModelMappingService {
     Tkdy01Repository tkdy01Repository;
     @Inject
     TdbddpRepository tdbddpRepository;
+    @Inject
+    TdbddcRepository tdbddcRepository;
 
     @Inject
     KdtMapper kdtMapper;
@@ -51,8 +54,10 @@ public class ModelMappingService {
                 return tkda10Repository;
             case "bmw.mfmdd.Fertigungsstueckliste.v1.dbt.tdbddp":
                 return tdbddpRepository;
+            case "bmw.mfmdd.Fertigungsstueckliste.v1.dbt.tdbddc":
+                return tdbddcRepository;
         }
-
+        LOG.error("no repository found for " + topicName);
         return null;
     }
 

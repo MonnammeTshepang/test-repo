@@ -54,6 +54,8 @@ public class KmnrConsumer {
 
     private void persistDataChange(ConsumerRecord<String, GenericRecord> record) {
         String topic = record.topic();
+        String recordsSchema = record.value().getSchema().toString(true);
+        LOG.debug("caputred message schema: " + recordsSchema);
 
         Function<GenericRecord, Object> mapper = modelMappingService.getMapper(topic);
         if (mapper != null) {
@@ -68,7 +70,6 @@ public class KmnrConsumer {
             JpaRepository repository = modelMappingService.getRepository(topic);
             repository.save(entity);
         } else {
-            String recordsSchema = record.value().getSchema().toString(true);
             LOG.info("topic with no config yet " + topic);
             LOG.info(recordsSchema);
         }

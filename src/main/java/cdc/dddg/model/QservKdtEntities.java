@@ -32,7 +32,7 @@ public enum QservKdtEntities {
                            "leist", "leity", "lenk", "model", "modja", "montageland", "motor", "motorvar", "msport", "prodart",
                            "pseudo", "star", "terkz", "tsart", "tuer", "typ_altv", "typart", "typhist", "typnr", "typsrt"));
         FIELDS.put(TDBDDP, List.of("pnum", "timestamp", "plexmem"));
-        FIELDS.put(TDBDDC, List.of("pnum", "timestamp", "plexmem"));
+        FIELDS.put(TDBDDC, List.of("pnum","cnum", "timestamp", "plexmem"));
     }
 
     public static List<String> getFields(QservKdtEntities name) {
